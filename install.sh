@@ -15,6 +15,16 @@ MUTED='\033[38;2;139;127;119m'
 NC='\033[0m' # No Color
 
 # --- Configuration ---
+# Ensure we have a TTY for user interaction, even if piped
+if [ -t 0 ]; then
+    exec 3<&0
+elif [ -e /dev/tty ]; then
+    exec 3</dev/tty
+else
+    # Fallback to stdin if no TTY, though interaction may fail
+    exec 3<&0
+fi
+
 MCP_CONFIG_DIR="$HOME/.mcporter"
 MCP_CONFIG_FILE="$MCP_CONFIG_DIR/mcporter.json"
 TMPFILES=()
@@ -163,10 +173,10 @@ ask_input() {
     echo -ne "${INFO}?${NC} $prompt ${MUTED}(optional)${NC}: "
 
     if [[ "$is_secret" == "1" ]]; then
-        read -rs input_val
+        read -rs input_val <&3
         echo ""
     else
-        read -r input_val
+        read -r input_val <&3
     fi
     printf -v "$var_name" '%s' "$input_val"
 }
@@ -221,7 +231,7 @@ multiselect() {
 
         # Read Input (with IFS cleared to capture space correctly)
         local key=""
-        IFS= read -rsn1 key
+        IFS= read -rsn1 key <&3
 
         case "$key" in
             "") # Enter key (empty string)
@@ -235,7 +245,7 @@ multiselect() {
                 fi
                 ;;
             $'\x1b') # Escape sequence
-                read -rsn2 -t 0.1 key
+                read -rsn2 -t 0.1 key <&3
                 case "$key" in
                     "[A") # Up Arrow
                         ((current--)) || true
