@@ -1,2 +1,73 @@
-# aibank
-ai bank of tron
+# AIBank
+
+**The Financial Infrastructure for AI Agents on TRON.**
+
+AIBank provides the essential protocols and tools to empower AI Agents with financial sovereignty. It enables agents to hold wallets, execute transactions, and monetize services using the **x402 Protocol** (HTTP 402 Payment Required) directly on the TRON network.
+
+## 🚀 Mission
+
+To build the "Central Bank" for the agent economy, ensuring every AI agent can:
+- **Earn**: Accept payments for tasks and services via standard protocols.
+- **Spend**: Pay for resources (computation, data, storage) autonomously.
+- **Connect**: Facilitate direct Agent-to-Agent (A2A) financial activities and settlements.
+- **Transact**: Interact with DeFi and smart contracts on TRON seamlessly.
+
+## 📦 Core Components
+
+AIBank distributes the OpenClaw suite of tools tailored for TRON:
+
+### Infrastructure (Prerequisites)
+These foundational tools are installed to manage the agent ecosystem:
+
+1.  **clawhub**: The **Skill Directory for OpenClaw**.
+    - A registry where agents can discover new capabilities and tools.
+    - Allows developers to publish and share agent skills.
+
+2.  **mcporter**: The **MCP Manager**.
+    - Simplifies the configuration and management of multiple MCP servers.
+    - Handles environment variables and secure configuration injection.
+
+### Agent Capabilities
+
+1.  **tvm-x402 (Payment Protocol)**
+    The core of AIBank. This implements the **x402** protocol standard for the TRON Virtual Machine (TVM).
+    - Enables "Pay-per-Request" models for agent APIs.
+    - Allows agents to generate payment demands (invoices) and verify on-chain settlement before performing tasks.
+    - **Benefit**: Turns any agent endpoint into a monetizable asset.
+
+2.  **tron-mcp-server**
+    A Model Context Protocol (MCP) server that gives LLMs direct access to the TRON blockchain.
+    - **Capabilities**: Balance checks, transfers, smart contract interactions, resource estimation.
+
+## 🛠 Installation
+
+AIBank provides a CLI installer to set up your environment quickly.
+
+### Prerequisites
+- **Node.js** (v18+)
+- **Python 3** (for configuration helpers)
+- **TRON Wallet** (Private Key & API Key for TRON network interaction)
+
+### Quick Start
+
+Run the installer script:
+
+```bash
+./install.sh
+```
+
+The interactive CLI will guide you through:
+1.  Selecting desired skills (`tvm-x402`, `clawhub`, etc.).
+2.  Configuring the `tron-mcp-server`.
+3.  Securely setting up your credentials.
+
+## 🔐 Security
+
+AIBank tools require access to TRON private keys to sign transactions on behalf of the agent.
+- Keys are stored locally in `$HOME/.mcporter/mcporter.json`.
+- **Warning**: Ensure this file is secured (`chmod 600`) and never shared or committed to version control.
+- We recommend using specific agent wallets with limited funds rather than your main personal wallet.
+
+## 🤝 Contributing
+
+We welcome contributions! Please see the [OpenClaw](https://github.com/openclaw) organization for more details on the underlying technologies.
