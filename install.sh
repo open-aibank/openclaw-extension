@@ -70,8 +70,14 @@ check_env() {
         echo -e "${ERROR}Error: 'npx' is not found.${NC}"
         exit 1
     fi
-    if ! command -v python &> /dev/null; then
-        echo -e "${ERROR}Error: 'python' is not found (required for JSON processing).${NC}"
+
+    # Detect Python interpreter
+    if command -v python3 &> /dev/null; then
+        PYTHON_CMD="python3"
+    elif command -v python &> /dev/null; then
+        PYTHON_CMD="python"
+    else
+        echo -e "${ERROR}Error: Neither 'python3' nor 'python' found (required for JSON processing).${NC}"
         exit 1
     fi
 }
@@ -144,7 +150,7 @@ for k, v in payload.items():
 with open(file_path, 'w') as f:
     json.dump(data, f, indent=2)
 EOF
-    python "$py_script"
+    $PYTHON_CMD "$py_script"
 }
 
 ask_input() {
@@ -176,8 +182,7 @@ multiselect() {
     local i
 
     # Initialize selection
-    for ((i=0; i<${#options[@]}; i++)); do selected[i]=false; done
-    selected[0]=true # Default first to true
+    for ((i=0; i<${#options[@]}; i++)); do selected[i]=true; done # Default all to true
 
     # Prepare screen area
     echo -e "${INFO}?${NC} ${BOLD}$prompt${NC} ${MUTED}(Space:toggle, Enter:confirm)${NC}"
@@ -267,7 +272,33 @@ check_env
 # Ensure config directory exists
 mkdir -p "$MCP_CONFIG_DIR"
 
-# --- Step 1: Server Selection (Multiselect) ---
+# --- Step 1: Skills (Multiselect) ---
+
+# Define Skill Options
+SKILL_OPTIONS=("clawhub" "mcporter")
+SKILL_IDS=("clawhub" "mcporter")
+
+if [ ${#SKILL_OPTIONS[@]} -gt 0 ]; then
+    echo ""
+    SELECTED_SKILL_INDICES=()
+    multiselect "Select Skills/Tools to install:" SELECTED_SKILL_INDICES "${SKILL_OPTIONS[@]}"
+
+    if [ ${#SELECTED_SKILL_INDICES[@]} -gt 0 ]; then
+        for idx in "${SELECTED_SKILL_INDICES[@]}"; do
+            SKILL_ID="${SKILL_IDS[$idx]}"
+            echo -e "${INFO}Installing: $SKILL_ID...${NC}"
+            npx clawhub install --force "$SKILL_ID"
+        done
+    else
+        echo -e "${MUTED}No skills selected.${NC}"
+    fi
+else
+    echo ""
+    echo -e "${BOLD}Install Skills:${NC}"
+    echo -e "${MUTED}(No additional skills currently available)${NC}"
+fi
+
+# --- Step 2: Server Selection (Multiselect) ---
 
 # Define Server Options and mapping
 SERVER_OPTIONS=("tron-mcp-server (TRON Blockchain)")
@@ -281,7 +312,7 @@ if [ ${#SELECTED_INDICES[@]} -eq 0 ]; then
     exit 0
 fi
 
-# --- Step 2: Configuration ---
+# --- Step 3: Configuration ---
 
 for idx in "${SELECTED_INDICES[@]}"; do
     SERVER_ID="${SERVER_IDS[$idx]}"
@@ -330,32 +361,6 @@ EOF
 
     echo -e "${SUCCESS}✓ Configuration saved for $SERVER_ID.${NC}"
 done
-
-# --- Step 3: Skills (Multiselect) ---
-
-# Define Skill Options (Currently none, logic ready for expansion)
-SKILL_OPTIONS=() # Add skills here like: ("twitter-skill" "web-search-skill")
-SKILL_IDS=()     # Add IDs here like: ("@openclaw/twitter" "@openclaw/web")
-
-if [ ${#SKILL_OPTIONS[@]} -gt 0 ]; then
-    echo ""
-    SELECTED_SKILL_INDICES=()
-    multiselect "Select Skills to install:" SELECTED_SKILL_INDICES "${SKILL_OPTIONS[@]}"
-
-    if [ ${#SELECTED_SKILL_INDICES[@]} -gt 0 ]; then
-        for idx in "${SELECTED_SKILL_INDICES[@]}"; do
-            SKILL_ID="${SKILL_IDS[$idx]}"
-            echo -e "${INFO}Installing skill: $SKILL_ID...${NC}"
-            npx crawhub install "$SKILL_ID"
-        done
-    else
-        echo -e "${MUTED}No skills selected.${NC}"
-    fi
-else
-    echo ""
-    echo -e "${BOLD}Install Skills:${NC}"
-    echo -e "${MUTED}(No additional skills currently available)${NC}"
-fi
 
 # --- Final Summary ---
 echo ""
