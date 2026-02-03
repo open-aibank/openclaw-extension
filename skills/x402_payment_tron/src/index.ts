@@ -178,7 +178,6 @@ async function main() {
     } else if (contentType.includes('image/') || contentType.includes('application/octet-stream')) {
       const arrayBuffer = await response.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      const base64 = buffer.toString('base64');
       
       const tmpDir = os.tmpdir();
       const isImage = contentType.includes('image/');
@@ -194,8 +193,7 @@ async function main() {
       responseBody = {
         file_path: filePath,
         content_type: contentType,
-        bytes: buffer.length,
-        base64: base64
+        bytes: buffer.length
       };
     } else {
       responseBody = await response.text();

@@ -114,7 +114,6 @@ If the endpoint returns an image (Content-Type: `image/*`) or binary data (`appl
     - `file_path`: Path to the temporary file.
     - `content_type`: The MIME type of the content.
     - `bytes`: File size in bytes.
-    - `base64`: Base64 encoded content.
 3. **Important**: The Agent is responsible for deleting the temporary file after it has been used or processed.
 
 ---
