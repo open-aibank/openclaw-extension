@@ -290,8 +290,8 @@ mkdir -p "$MCP_CONFIG_DIR"
 # --- Step 1: Skills (Multiselect) ---
 
 # Define Skill Options
-SKILL_OPTIONS=("clawhub - Skill Directory for OpenClaw" "mcporter - MCP server manager and configuration tool" "x402-payment-tron - Enables agent payments on TRON network (x402 protocol)")
-SKILL_IDS=("clawhub" "mcporter" "x402-payment-tron")
+SKILL_OPTIONS=("mcporter - MCP server manager and configuration tool" "x402-payment-tron - Enables agent payments on TRON network (x402 protocol)")
+SKILL_IDS=("mcporter" "x402-payment-tron")
 
 if [ ${#SKILL_OPTIONS[@]} -gt 0 ]; then
     echo ""
