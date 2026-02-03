@@ -176,9 +176,27 @@ async function main() {
     if (contentType.includes('application/json')) {
       responseBody = await response.json();
     } else if (contentType.includes('image/') || contentType.includes('application/octet-stream')) {
-      // Handle binary data as Base64
       const arrayBuffer = await response.arrayBuffer();
-      responseBody = Buffer.from(arrayBuffer).toString('base64');
+      const buffer = Buffer.from(arrayBuffer);
+      const base64 = buffer.toString('base64');
+      
+      const tmpDir = os.tmpdir();
+      const isImage = contentType.includes('image/');
+      const ext = isImage ? (contentType.split('/')[1]?.split(';')[0] || 'bin') : 'bin';
+      const prefix = isImage ? 'x402_image' : 'x402_binary';
+      const fileName = `${prefix}_${Date.now()}_${Math.random().toString(36).substring(7)}.${ext}`;
+      const filePath = path.join(tmpDir, fileName);
+      
+      fs.writeFileSync(filePath, buffer);
+      console.error(`[x402] Binary data saved to temporary file: ${filePath}`);
+      console.error(`[x402] Please delete this file after use.`);
+
+      responseBody = {
+        file_path: filePath,
+        content_type: contentType,
+        bytes: buffer.length,
+        base64: base64
+      };
     } else {
       responseBody = await response.text();
     }
@@ -188,7 +206,7 @@ async function main() {
       status: response.status,
       headers: Object.fromEntries(response.headers.entries()),
       body: responseBody,
-      isBase64: contentType.includes('image/') || contentType.includes('application/octet-stream')
+      isBase64: false
     }, null, 2));
 
   } catch (error: any) {

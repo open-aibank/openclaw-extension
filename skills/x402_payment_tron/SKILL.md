@@ -106,6 +106,19 @@ Check if you have enough USDT and TRX.
 
 ---
 
+## Binary and Image Handling
+
+If the endpoint returns an image (Content-Type: `image/*`) or binary data (`application/octet-stream`):
+1. The data is automatically saved to a temporary file (e.g., `/tmp/x402_image_...` or `/tmp/x402_binary_...`).
+2. The tool returns a JSON object with:
+    - `file_path`: Path to the temporary file.
+    - `content_type`: The MIME type of the content.
+    - `bytes`: File size in bytes.
+    - `base64`: Base64 encoded content.
+3. **Important**: The Agent is responsible for deleting the temporary file after it has been used or processed.
+
+---
+
 ## Network Reference
 
 | Network | Chain ID | CAIP-2 | USDT Contract |
