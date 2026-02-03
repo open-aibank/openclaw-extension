@@ -108,7 +108,8 @@ Check if you have enough USDT and TRX.
 
 ## Network Reference
 
-| Network | Chain ID | USDT Contract |
-|---------|----------|---------------|
-| TRON Mainnet | 0x2b6653dc | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` |
-| TRON Nile | 0xcd8690dc | `TXLAQ63Xg1NAzckPwKHvzw7CSEmLMEqcdj` |
+| Network | Chain ID | CAIP-2 | USDT Contract |
+|---------|----------|--------|---------------|
+| TRON Mainnet | 0x2b6653dc | `eip155:728126428`, `tron:mainnet` | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` |
+| TRON Nile | 0xcd8690dc | `eip155:3448148188`, `tron:nile` | `TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf` |
+| TRON Shasta | 0x94a9059e | `eip155:2494104990`, `tron:shasta` | - |
