@@ -290,8 +290,8 @@ mkdir -p "$MCP_CONFIG_DIR"
 # --- Step 1: Skills (Multiselect) ---
 
 # Define Skill Options
-SKILL_OPTIONS=("clawhub - Skill Directory for OpenClaw" "mcporter - MCP server manager and configuration tool" "tvm-x402 - Enables agent payments on TRON network (x402 protocol)")
-SKILL_IDS=("clawhub" "mcporter" "tvm-x402")
+SKILL_OPTIONS=("mcporter - MCP server manager and configuration tool" "x402-payment-tron - Enables agent payments on TRON network (x402 protocol)")
+SKILL_IDS=("mcporter" "x402-payment-tron")
 
 if [ ${#SKILL_OPTIONS[@]} -gt 0 ]; then
     echo ""
@@ -342,8 +342,8 @@ for idx in "${SELECTED_INDICES[@]}"; do
              echo -e "${WARN}DO NOT allow AI agents to scan this file.${NC}"
              echo ""
 
-             ask_input "Enter TRON_PRIVATE_KEY" TRON_KEY 1 "Your TRON wallet private key. Required for signing transactions."
-             ask_input "Enter TRONGRID_API_KEY" TRON_API_KEY 1 "Your TronGrid API Key. Required for reliable network access."
+             ask_input "Enter TRON_PRIVATE_KEY" TRON_KEY 0 "Your TRON wallet private key. Required for signing transactions."
+             ask_input "Enter TRONGRID_API_KEY" TRON_API_KEY 0 "Your TronGrid API Key. Required for reliable network access."
 
              echo -e "${MUTED}Saving configuration...${NC}"
 
