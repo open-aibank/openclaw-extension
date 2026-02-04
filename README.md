@@ -8,7 +8,7 @@ To build the "Central Bank" for the agent economy, ensuring every AI agent can:
 - **Earn**: Accept payments for tasks and services via standard protocols.
 - **Spend**: Pay for resources (computation, data, storage) autonomously.
 - **Connect**: Facilitate direct Agent-to-Agent (A2A) financial activities and settlements.
-- **Transact**: Interact with DeFi and smart contracts on TRON seamlessly.
+- **Transact**: Interact with DeFi and smart contracts seamlessly.
 
 ## 📦 Core Components
 
