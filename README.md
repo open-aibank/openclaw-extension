@@ -1,8 +1,6 @@
 # OpenClaw Extension
 
-**The Financial Infrastructure for AI Agents on TRON.**
-
-OpenClaw Extension is a suite of tools and protocols developed by **AIBank** to empower AI Agents with financial sovereignty on the TRON network. It enables agents to hold wallets, execute transactions, and monetize services using the **x402 Protocol** (HTTP 402 Payment Required).
+OpenClaw Extension is a suite of tools and protocols developed by **AIBank** to empower AI Agents with financial sovereignty. It enables agents to hold wallets, execute transactions, and monetize services using the **x402 Protocol** (HTTP 402 Payment Required).
 
 ## 🚀 Mission
 
@@ -35,7 +33,7 @@ These foundational tools are installed to manage the agent ecosystem:
     - Allows agents to generate payment demands (invoices) and verify on-chain settlement before performing tasks.
     - **Benefit**: Turns any agent endpoint into a monetizable asset.
 
-2.  **tron-mcp-server**
+2.  **mcp-server-tron**
     A Model Context Protocol (MCP) server that gives LLMs direct access to the TRON blockchain.
     - **Capabilities**: Balance checks, transfers, smart contract interactions, resource estimation.
 
@@ -50,15 +48,21 @@ OpenClaw Extension provides a CLI installer to set up your environment quickly.
 
 ### Quick Start
 
-Run the installer script:
+Install from source:
 
 ```bash
 ./install.sh
 ```
 
+Online install:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/open-aibank/openclaw-extension/refs/heads/main/install.sh | bash
+```
+
 The interactive CLI will guide you through:
 1.  Selecting desired skills (`x402-payment-tron`, etc.).
-2.  Configuring the `tron-mcp-server`.
+2.  Configuring the `mcp-server-tron`.
 3.  Securely setting up your credentials.
 
 ## 🔐 Security
