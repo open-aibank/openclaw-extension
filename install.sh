@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-# AIBank OpenClaw Plugin Installer (CLI Version)
+# OpenClaw Extension Installer (by AIBank)
 
 # --- Colors & Styling ---
 BOLD='\033[1m'
@@ -58,7 +58,7 @@ TAGLINES=(
     "Your financial sovereignty, now with automated claws."
     "TRC-20 automation: Sending tokens like it's text messages."
     "Smart contracts, smarter agent. No more manual ABI guessing."
-    "AIBank: Where AI meets DeFi, and your portfolio thanks you."
+    "OpenClaw Extension: Where AI meets DeFi, and your portfolio thanks you."
 )
 
 pick_tagline() {
@@ -278,7 +278,7 @@ multiselect() {
 # --- Main Logic ---
 
 echo -e "${ACCENT}${BOLD}"
-echo "  🦞 AIBank OpenClaw Installer"
+echo "  🦞 OpenClaw Extension Installer (by AIBank)"
 echo -e "${NC}${ACCENT_DIM}  $TAGLINE${NC}"
 echo ""
 

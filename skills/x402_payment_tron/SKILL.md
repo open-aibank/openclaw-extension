@@ -38,7 +38,7 @@ npm start -- --url <URL>
 
 - **Wallet**: A TRON private key must be available. The skill automatically looks for it in:
   1. `TRON_PRIVATE_KEY` environment variable.
-  2. `~/.mcporter/mcporter.json` (AIBank standard configuration).
+  2. `~/.mcporter/mcporter.json` (Preferred configuration for OpenClaw Extension by AIBank).
   3. `x402-config.json` in the current directory.
   4. `~/.x402-config.json` in the home directory.
 - **USDT on TRON**: Wallet needs USDT and some TRX for gas.
