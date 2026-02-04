@@ -5,13 +5,13 @@ set -euo pipefail
 
 # --- Colors & Styling ---
 BOLD='\033[1m'
-ACCENT='\033[38;2;255;90;45m'
-ACCENT_DIM='\033[38;2;209;74;34m'
-INFO='\033[38;2;255;138;91m'
-SUCCESS='\033[38;2;47;191;113m'
-WARN='\033[38;2;255;176;32m'
-ERROR='\033[38;2;226;61;45m'
-MUTED='\033[38;2;139;127;119m'
+ACCENT='\033[38;2;255;90;45m'      # Brand Orange
+ACCENT_DIM='\033[38;2;209;74;34m'  # Darker Orange
+INFO='\033[38;2;0;145;255m'        # Balanced Blue (Works on both light/dark)
+SUCCESS='\033[38;2;0;200;83m'      # Balanced Green
+WARN='\033[38;2;255;171;0m'        # Balanced Amber
+ERROR='\033[38;2;211;47;47m'       # Balanced Red
+MUTED='\033[38;2;128;128;128m'     # Medium Gray
 NC='\033[0m' # No Color
 
 # --- Configuration ---
@@ -290,8 +290,8 @@ mkdir -p "$MCP_CONFIG_DIR"
 # --- Step 1: Skills (Multiselect) ---
 
 # Define Skill Options
-SKILL_OPTIONS=("mcporter - MCP server manager and configuration tool" "x402-payment-tron - Enables agent payments on TRON network (x402 protocol)")
-SKILL_IDS=("mcporter" "x402-payment-tron")
+SKILL_OPTIONS=("mcporter - MCP server manager and configuration tool" "x402-payment-tron - Enables agent payments on TRON network (x402 protocol)" "x402-payment-demo - Demo of x402 payment protocol by fetching a protected image.")
+SKILL_IDS=("mcporter" "x402-payment-tron" "x402-payment-demo")
 
 if [ ${#SKILL_OPTIONS[@]} -gt 0 ]; then
     echo ""
