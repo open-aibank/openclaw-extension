@@ -2,7 +2,7 @@
 name: x402_payment_tron
 description: "Pay for x402-enabled Agent endpoints using USDT on TRON"
 version: 1.0.0
-author: x402-protocol
+author: open-aibank
 homepage: https://x402.org
 metadata: {"clawdbot":{"emoji":"💳","env":["TRON_PRIVATE_KEY"]}}
 tags: [crypto, payments, x402, agents, api, usdt, tron]
