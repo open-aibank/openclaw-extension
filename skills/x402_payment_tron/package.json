@@ -4,16 +4,16 @@
   "description": "x402 payment skill for TRON",
   "type": "module",
   "scripts": {
-    "build": "npx @vercel/ncc build src/index.ts -o dist",
-    "start": "node dist/index.js"
+    "build": "npx @vercel/ncc build src/x402_tron_invoke.ts -o dist && mv dist/index.js dist/x402_tron_invoke.js",
+    "start": "node dist/x402_tron_invoke.js"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.38.1"
+    "@vercel/ncc": "^0.38.1",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@open-aibank/x402-tron": "^0.1.6",
     "tronweb": "^5.3.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.3.0"
+    "ts-node": "^10.9.1"
   }
 }
