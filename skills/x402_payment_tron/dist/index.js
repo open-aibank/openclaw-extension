@@ -37757,23 +37757,23 @@ var __webpack_exports__ = {};
 
 ;// CONCATENATED MODULE: ./node_modules/@open-aibank/x402-tron/dist/client/x402Client.js
 /**
- * X402Client - x402 协议的核心支付客户端
+ * X402Client - Core payment client for x402 protocol
  *
- * 管理支付机制注册表并协调支付流程。
+ * Manages payment mechanism registry and coordinates payment flows.
  */
 /**
- * X402Client - 核心支付客户端
+ * X402Client - Core payment client
  *
- * 管理支付机制并协调支付流程。
+ * Manages payment mechanisms and coordinates payment flows.
  */
 class X402Client {
     mechanisms = [];
     /**
-     * 为网络模式注册支付机制
+     * Register payment mechanism for network pattern
      *
-     * @param networkPattern - 网络模式（例如 "eip155:*", "tron:shasta"）
-     * @param mechanism - 支付机制实例
-     * @returns this 以支持链式调用
+     * @param networkPattern - Network pattern (e.g. "eip155:*", "tron:shasta")
+     * @param mechanism - Payment mechanism instance
+     * @returns this for method chaining
      */
     register(networkPattern, mechanism) {
         const priority = this.calculatePriority(networkPattern);
@@ -37786,11 +37786,11 @@ class X402Client {
         return this;
     }
     /**
-     * 从可用选项中选择支付要求
+     * Select payment requirements from available options
      *
-     * @param accepts - 可用的支付要求
-     * @param filters - 可选过滤器
-     * @returns 选定的支付要求
+     * @param accepts - Available payment requirements
+     * @param filters - Optional filters
+     * @returns Selected payment requirements
      */
     selectPaymentRequirements(accepts, filters) {
         let candidates = accepts;
@@ -37811,12 +37811,12 @@ class X402Client {
         return candidates[0];
     }
     /**
-     * 为给定要求创建支付载荷
+     * Create payment payload for given requirements
      *
-     * @param requirements - 选定的支付要求
-     * @param resource - 资源 URL
-     * @param extensions - 可选扩展
-     * @returns 支付载荷
+     * @param requirements - Selected payment requirements
+     * @param resource - Resource URL
+     * @param extensions - Optional extensions
+     * @returns Payment payload
      */
     async createPaymentPayload(requirements, resource, extensions) {
         const mechanism = this.findMechanism(requirements.network);
@@ -37826,13 +37826,13 @@ class X402Client {
         return mechanism.createPaymentPayload(requirements, resource, extensions);
     }
     /**
-     * 处理需要支付的响应
+     * Handle payment required response
      *
-     * @param accepts - 可用的支付要求
-     * @param resource - 资源 URL
-     * @param extensions - 可选扩展
-     * @param selector - 可选自定义选择器
-     * @returns 支付载荷
+     * @param accepts - Available payment requirements
+     * @param resource - Resource URL
+     * @param extensions - Optional extensions
+     * @param selector - Optional custom selector
+     * @returns Payment payload
      */
     async handlePayment(accepts, resource, extensions, selector) {
         const requirements = selector
@@ -37841,7 +37841,7 @@ class X402Client {
         return this.createPaymentPayload(requirements, resource, extensions);
     }
     /**
-     * 查找网络的机制
+     * Find mechanism for network
      */
     findMechanism(network) {
         for (const entry of this.mechanisms) {
@@ -37852,7 +37852,7 @@ class X402Client {
         return null;
     }
     /**
-     * 将网络与模式匹配
+     * Match network with pattern
      */
     matchPattern(pattern, network) {
         if (pattern === network)
@@ -37864,7 +37864,7 @@ class X402Client {
         return false;
     }
     /**
-     * 计算模式的优先级（更具体 = 更高优先级）
+     * Calculate priority for pattern (more specific = higher priority)
      */
     calculatePriority(pattern) {
         if (pattern.endsWith(':*'))
@@ -38023,7 +38023,7 @@ const PAYMENT_PERMIT_TYPES = {
     ],
     Payment: [
         { name: 'payToken', type: 'address' },
-        { name: 'maxPayAmount', type: 'uint256' },
+        { name: 'payAmount', type: 'uint256' },
         { name: 'payTo', type: 'address' },
     ],
     Fee: [
@@ -38086,9 +38086,9 @@ const CHAIN_IDS = {
 };
 /** PaymentPermit contract addresses */
 const PAYMENT_PERMIT_ADDRESSES = {
-    'tron:mainnet': 'T...', // TODO: Deploy
-    'tron:shasta': 'T...', // TODO: Deploy
-    'tron:nile': 'TCR6EaRtLRYjWPr7YWHqt4uL81rfevtE8p',
+    'tron:mainnet': 'THnW1E6yQWgx9P3QtSqWw2t3qGwH35jARg',
+    'tron:shasta': 'TVjYLoXatyMkemxzeB9M8ZE3uGttR9QZJ8',
+    'tron:nile': 'TQr1nSWDLWgmJ3tkbFZANnaFcB5ci7Hvxa',
 };
 /** Zero address for TRON */
 const TRON_ZERO_ADDRESS = 'T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb';
@@ -38281,15 +38281,15 @@ function toBase58(addr) {
 //# sourceMappingURL=address.js.map
 ;// CONCATENATED MODULE: ./node_modules/@open-aibank/x402-tron/dist/http/client.js
 /**
- * X402FetchClient - 基于 Fetch 的具有自动 402 支付处理的 HTTP 客户端
+ * X402FetchClient - Fetch-based HTTP client with automatic 402 payment handling
  */
 
-/** x402 协议的 HTTP 头 */
+/** HTTP headers for x402 protocol */
 const PAYMENT_SIGNATURE_HEADER = 'PAYMENT-SIGNATURE';
 const PAYMENT_REQUIRED_HEADER = 'PAYMENT-REQUIRED';
 const PAYMENT_RESPONSE_HEADER = 'PAYMENT-RESPONSE';
 /**
- * 基于 Fetch 的具有自动 402 支付处理的 HTTP 客户端
+ * Fetch-based HTTP client with automatic 402 payment handling
  */
 class X402FetchClient {
     x402Client;
@@ -38299,7 +38299,7 @@ class X402FetchClient {
         this.selector = selector;
     }
     /**
-     * 发起具有自动 402 支付处理的请求
+     * Make request with automatic 402 payment handling
      */
     async request(url, init) {
         const response = await fetch(url, init);
@@ -38314,19 +38314,19 @@ class X402FetchClient {
         return this.retryWithPayment(url, init, paymentPayload);
     }
     /**
-     * 带支付处理的 GET 请求
+     * GET request with payment handling
      */
     async get(url, init) {
         return this.request(url, { ...init, method: 'GET' });
     }
     /**
-     * 带支付处理的 POST 请求
+     * POST request with payment handling
      */
     async post(url, body, init) {
         return this.request(url, { ...init, method: 'POST', body });
     }
     /**
-     * 从 402 响应解析 PaymentRequired
+     * Parse PaymentRequired from 402 response
      */
     async parsePaymentRequired(response) {
         const headerValue = response.headers.get(PAYMENT_REQUIRED_HEADER);
@@ -38335,7 +38335,7 @@ class X402FetchClient {
                 return decodePaymentPayload(headerValue);
             }
             catch {
-                // 继续解析主体
+                // Continue to parse body
             }
         }
         try {
@@ -38345,12 +38345,12 @@ class X402FetchClient {
             }
         }
         catch {
-            // 无法解析
+            // Unable to parse
         }
         return null;
     }
     /**
-     * 使用支付载荷重试请求
+     * Retry request with payment payload
      */
     async retryWithPayment(url, init, paymentPayload) {
         const encodedPayload = encodePaymentPayload(paymentPayload);
@@ -38363,17 +38363,17 @@ class X402FetchClient {
     }
 }
 //# sourceMappingURL=client.js.map
-;// CONCATENATED MODULE: ./node_modules/@open-aibank/x402-tron/dist/mechanisms/upto.js
+;// CONCATENATED MODULE: ./node_modules/@open-aibank/x402-tron/dist/mechanisms/exact.js
 /**
- * UptoTronClientMechanism - TRON client mechanism for "upto" payment scheme
+ * ExactTronClientMechanism - TRON client mechanism for "exact" payment scheme
  *
  * Uses TIP-712 (TRON's EIP-712 implementation) for signing PaymentPermit.
  */
 
 /**
- * TRON client mechanism for "upto" payment scheme
+ * TRON client mechanism for "exact" payment scheme
  */
-class UptoTronClientMechanism {
+class ExactTronClientMechanism {
     signer;
     addressConverter = new TronAddressConverter();
     constructor(signer) {
@@ -38398,10 +38398,10 @@ class UptoTronClientMechanism {
                 validBefore: context.meta.validBefore,
             },
             buyer: buyerAddress,
-            caller: zeroAddress, // Caller is zero address for client-initiated payments
+            caller: context.caller || zeroAddress, // Use facilitator address from context, fallback to zero
             payment: {
                 payToken: requirements.asset,
-                maxPayAmount: requirements.amount,
+                payAmount: requirements.amount,
                 payTo: requirements.payTo,
             },
             fee: {
@@ -38415,7 +38415,7 @@ class UptoTronClientMechanism {
             },
         };
         // Ensure allowance
-        const totalAmount = BigInt(permit.payment.maxPayAmount) + BigInt(permit.fee.feeAmount);
+        const totalAmount = BigInt(permit.payment.payAmount) + BigInt(permit.fee.feeAmount);
         await this.signer.ensureAllowance(permit.payment.payToken, totalAmount, requirements.network);
         // Build EIP-712 domain (no version field per contract spec)
         // Note: domain name is "PaymentPermit", not "PaymentPermitDetails"
@@ -38442,7 +38442,7 @@ class UptoTronClientMechanism {
             caller: this.addressConverter.toEvmFormat(permit.caller),
             payment: {
                 payToken: this.addressConverter.toEvmFormat(permit.payment.payToken),
-                maxPayAmount: BigInt(permit.payment.maxPayAmount),
+                payAmount: BigInt(permit.payment.payAmount),
                 payTo: this.addressConverter.toEvmFormat(permit.payment.payTo),
             },
             fee: {
@@ -38480,7 +38480,7 @@ class UptoTronClientMechanism {
         };
     }
 }
-//# sourceMappingURL=upto.js.map
+//# sourceMappingURL=exact.js.map
 ;// CONCATENATED MODULE: ./node_modules/@open-aibank/x402-tron/dist/signers/signer.js
 /**
  * TronClientSigner - TRON client signer for x402 protocol
@@ -38722,6 +38722,55 @@ async function findPrivateKey() {
     }
     return undefined;
 }
+async function findApiKey() {
+    // 1. Check environment variable
+    if (process.env.TRON_GRID_API_KEY) {
+        return process.env.TRON_GRID_API_KEY;
+    }
+    // 2. Check local config files silently
+    const configFiles = [
+        external_path_.join(process.cwd(), 'x402-config.json'),
+        external_path_.join(external_os_namespaceObject.homedir(), '.x402-config.json')
+    ];
+    for (const file of configFiles) {
+        if (external_fs_.existsSync(file)) {
+            try {
+                const config = JSON.parse(external_fs_.readFileSync(file, 'utf8'));
+                const key = config.tron_grid_api_key || config.api_key;
+                if (key)
+                    return key;
+            }
+            catch (e) {
+                // ignore malformed config
+            }
+        }
+    }
+    // 3. Check mcporter config (AIBank standard)
+    const mcporterPath = external_path_.join(external_os_namespaceObject.homedir(), '.mcporter', 'mcporter.json');
+    if (external_fs_.existsSync(mcporterPath)) {
+        try {
+            const config = JSON.parse(external_fs_.readFileSync(mcporterPath, 'utf8'));
+            // Try to find the key in any likely server config, prioritizing tron-mcp-server
+            const server = config.mcpServers?.['tron-mcp-server'];
+            if (server?.env?.TRON_GRID_API_KEY) {
+                return server.env.TRON_GRID_API_KEY;
+            }
+            // Fallback: check all servers for the env var
+            if (config.mcpServers) {
+                for (const serverName in config.mcpServers) {
+                    const s = config.mcpServers[serverName];
+                    if (s?.env?.TRON_GRID_API_KEY) {
+                        return s.env.TRON_GRID_API_KEY;
+                    }
+                }
+            }
+        }
+        catch (e) {
+            // ignore
+        }
+    }
+    return undefined;
+}
 async function main() {
     // Parse arguments
     const args = process.argv.slice(2);
@@ -38771,17 +38820,26 @@ async function main() {
         }
     };
     const config = networks[networkName] || networks.nile;
+    // Check for TRON_GRID_API_KEY to avoid rate limits
+    const apiKey = await findApiKey();
+    if (apiKey) {
+        console.error('[x402] Using TRON_GRID_API_KEY for connection.');
+    }
     try {
         // 1. Initialize TronWeb
-        const tronWeb = new (TronWeb_node_default())({
+        const tronWebOptions = {
             fullHost: config.fullHost,
             privateKey: privateKey
-        });
+        };
+        if (apiKey) {
+            tronWebOptions.headers = { 'TRON-PRO-API-KEY': apiKey };
+        }
+        const tronWeb = new (TronWeb_node_default())(tronWebOptions);
         // 2. Initialize Signer
         const signer = TronClientSigner.fromTronWeb(tronWeb, networkName);
         console.error(`[x402] Initialized signer for address: ${signer.getAddress()}`);
         // 3. Initialize Mechanism
-        const mechanism = new UptoTronClientMechanism(signer);
+        const mechanism = new ExactTronClientMechanism(signer);
         // 4. Initialize Core Client
         const client = new X402Client();
         // Register for all TRON networks

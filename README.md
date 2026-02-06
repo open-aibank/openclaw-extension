@@ -1,6 +1,6 @@
 # OpenClaw Extension
 
-OpenClaw Extension is a suite of tools and protocols developed by **AIBank** to empower AI Agents with financial sovereignty. It enables agents to hold wallets, execute transactions, and monetize services using the **x402 Protocol** (HTTP 402 Payment Required).
+OpenClaw Extension is a suite of tools developed by **AIBank** to empower AI Agents with financial sovereignty. It enables agents to hold wallets, execute transactions, and monetize services using the **x402 Protocol** (HTTP 402 Payment Required).
 
 ## 🚀 Mission
 
@@ -71,6 +71,10 @@ The tools require access to TRON private keys to sign transactions on behalf of 
 - Keys are stored locally in `$HOME/.mcporter/mcporter.json`.
 - **Warning**: Ensure this file is secured (`chmod 600`) and never shared or committed to version control.
 - We recommend using specific agent wallets with limited funds rather than your main personal wallet.
+
+## Use at your own risk
+
+Allowing AI agents to handle private keys directly involves substantial security risks. We advise using only small amounts of cryptocurrency and exercising caution. Despite the built-in safeguards, there is no guarantee that your assets are immune to loss. This extension is currently in an experimental stage and has not been subjected to rigorous testing. It is provided without any warranty or assumption of liability. Always validate your setup on a testnet (e.g., Nile) before interacting with the TRON mainnet.
 
 ## 🤝 Contributing
 

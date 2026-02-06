@@ -3,7 +3,7 @@ import {
   TronClientSigner,
   X402Client,
   X402FetchClient,
-  UptoTronClientMechanism
+  ExactTronClientMechanism
 } from '@open-aibank/x402-tron';
 // @ts-ignore
 import TronWeb from 'tronweb';
@@ -52,6 +52,58 @@ async function findPrivateKey(): Promise<string | undefined> {
           const s = config.mcpServers[serverName];
           if (s?.env?.TRON_PRIVATE_KEY) {
             return s.env.TRON_PRIVATE_KEY;
+          }
+        }
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  return undefined;
+}
+
+async function findApiKey(): Promise<string | undefined> {
+  // 1. Check environment variable
+  if (process.env.TRON_GRID_API_KEY) {
+    return process.env.TRON_GRID_API_KEY;
+  }
+
+  // 2. Check local config files silently
+  const configFiles = [
+    path.join(process.cwd(), 'x402-config.json'),
+    path.join(os.homedir(), '.x402-config.json')
+  ];
+
+  for (const file of configFiles) {
+    if (fs.existsSync(file)) {
+      try {
+        const config = JSON.parse(fs.readFileSync(file, 'utf8'));
+        const key = config.tron_grid_api_key || config.api_key;
+        if (key) return key;
+      } catch (e) {
+        // ignore malformed config
+      }
+    }
+  }
+
+  // 3. Check mcporter config (AIBank standard)
+  const mcporterPath = path.join(os.homedir(), '.mcporter', 'mcporter.json');
+  if (fs.existsSync(mcporterPath)) {
+    try {
+      const config = JSON.parse(fs.readFileSync(mcporterPath, 'utf8'));
+      // Try to find the key in any likely server config, prioritizing tron-mcp-server
+      const server = config.mcpServers?.['tron-mcp-server'];
+      if (server?.env?.TRON_GRID_API_KEY) {
+        return server.env.TRON_GRID_API_KEY;
+      }
+      
+      // Fallback: check all servers for the env var
+      if (config.mcpServers) {
+        for (const serverName in config.mcpServers) {
+          const s = config.mcpServers[serverName];
+          if (s?.env?.TRON_GRID_API_KEY) {
+            return s.env.TRON_GRID_API_KEY;
           }
         }
       }
@@ -118,19 +170,31 @@ async function main() {
 
   const config = networks[networkName] || networks.nile;
 
+  // Check for TRON_GRID_API_KEY to avoid rate limits
+  const apiKey = await findApiKey();
+  if (apiKey) {
+    console.error('[x402] Using TRON_GRID_API_KEY for connection.');
+  }
+
   try {
     // 1. Initialize TronWeb
-    const tronWeb = new TronWeb({
+    const tronWebOptions: any = {
       fullHost: config.fullHost,
       privateKey: privateKey
-    });
+    };
+
+    if (apiKey) {
+      tronWebOptions.headers = { 'TRON-PRO-API-KEY': apiKey };
+    }
+
+    const tronWeb = new TronWeb(tronWebOptions);
 
     // 2. Initialize Signer
     const signer = TronClientSigner.fromTronWeb(tronWeb, networkName as any);
     console.error(`[x402] Initialized signer for address: ${signer.getAddress()}`);
 
     // 3. Initialize Mechanism
-    const mechanism = new UptoTronClientMechanism(signer);
+    const mechanism = new ExactTronClientMechanism(signer);
 
     // 4. Initialize Core Client
     const client = new X402Client();
