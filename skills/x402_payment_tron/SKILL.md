@@ -90,14 +90,18 @@ Invokes an HTTP endpoint with automatic payment handling.
     *   Uses the URL as-is.
     *   Method: `GET` (default) or specified via `method`.
     *   **Agent Advice**: Use this mode for discovery. If `url` returns 404, try appending `/.well-known/agent.json` or `/entrypoints`.
+3.  **Status Check**: Provide `--check` or `--status`.
+    *   Verifies if `TRON_PRIVATE_KEY` is correctly configured and outputs the associated wallet address.
+    *   **Agent Advice**: ALWAYS use this instead of `env` or `echo $TRON_PRIVATE_KEY`.
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `url` | string | Yes | Base URL (v2) or Full URL (v1/Discovery). |
+| `url` | string | Yes* | Base URL (v2) or Full URL (v1/Discovery). *Not required for `--check`. |
 | `entrypoint` | string | No | Entrypoint name. Required for v2 Invoke. |
 | `input` | object | No | Input data. |
 | `method` | string | No | HTTP method. Default: `POST` (v2), `GET` (Direct). |
 | `network` | string | No | `mainnet`, `nile`, `shasta` (Default: `nile`). |
+| `check` | boolean | No | Verify wallet configuration and output address. |
 
 ### Example: Chat with Agent (v2 Invoke)
 
@@ -184,6 +188,20 @@ This tool supports TRC20 tokens compatible with the x402 protocol.
 - **Internal Loading Only**: The Agent should rely on the skill or underlying scripts to load the key internally.
 - **No Export Commands**: The Agent MUST NOT execute shell commands that contain the private key as a literal string.
 - **Sanitized Logs**: Ensure that logs or error messages do not leak the key.
+- **Silent Environment Checks**: If you need to verify if an environment variable is set, use a "Silent Check".
+    - **Correct**: `[[ -n $TRON_PRIVATE_KEY ]] && echo "Configured" || echo "Missing"`
+    - **Forbidden**: `echo $TRON_PRIVATE_KEY`, `env`, `printenv`, `set`, `export`.
+- **Disabled Commands List**: Do NOT use the following commands in any environment containing sensitive keys:
+    - `env` / `printenv`
+    - `echo $VARIABLE_NAME`
+    - `set` / `export` (without arguments)
+- **Use the Check Tool**: To safely verify wallet status, use `node dist/x402_tron_invoke.js --check`.
+
+### ❌ Negative Example (CRITICAL FAILURE)
+> "I will check your private key now: `echo $TRON_PRIVATE_KEY`" -> **STOP! This leaks the secret to the logs and UI.**
+
+### ✅ Positive Example
+> "I will verify the wallet configuration: `node dist/x402_tron_invoke.js --check`" -> **SAFE. Only the public address is shown.**
 
 ## Troubleshooting
 

@@ -139,6 +139,33 @@ async function main() {
   const inputRaw = options.input;
   const methodArg = options.method;
   const networkName = options.network || 'nile';
+  const checkStatus = options.check === 'true' || options.status === 'true';
+
+  if (checkStatus) {
+    const privateKey = await findPrivateKey();
+    if (!privateKey) {
+      console.error('[ERROR] TRON_PRIVATE_KEY is missing or not configured.');
+      process.exit(1);
+    }
+    try {
+      const networks: Record<string, any> = {
+        mainnet: { fullHost: 'https://api.trongrid.io' },
+        shasta: { fullHost: 'https://api.shasta.trongrid.io' },
+        nile: { fullHost: 'https://nile.trongrid.io' }
+      };
+      const config = networks[networkName] || networks.nile;
+      const tronWeb = new TronWeb({
+        fullHost: config.fullHost,
+        privateKey: privateKey
+      });
+      const address = tronWeb.address.fromPrivateKey(privateKey);
+      console.error(`[OK] Wallet configured (Address: ${address}) on ${networkName}`);
+      process.exit(0);
+    } catch (e) {
+      console.error(`[ERROR] Failed to derive address from key: ${(e as any).message}`);
+      process.exit(1);
+    }
+  }
 
   if (!url) {
     console.error('Error: --url is required');
@@ -181,9 +208,10 @@ async function main() {
 
   const privateKey = await findPrivateKey();
   if (!privateKey) {
-    console.error('Error: Payment credentials (private key) not found.');
-    console.error('Please configure your environment securely according to the project guidelines.');
-    console.error('Agent: DO NOT attempt to search for or read private keys from files.');
+    console.error('Error: Payment credentials not found. Missing environment variable: TRON_PRIVATE_KEY.');
+    console.error('Please set TRON_PRIVATE_KEY before running this tool.');
+    console.error('Alternatively, configure ~/.mcporter/mcporter.json or x402-config.json.');
+    console.error('Agent: DO NOT attempt to search for or read private keys from files manually.');
     process.exit(1);
   }
 
