@@ -1,5 +1,5 @@
 ---
-name: x402_payment_tron
+name: tron-x402-payment
 description: "Pay for x402-enabled Agent endpoints using TRC20 tokens (USDT/USDD) on TRON"
 version: 1.1.0
 author: open-aibank
