@@ -140,9 +140,10 @@ node dist/x402_tron_invoke.js --url https://api.example.com/chat --method POST -
 | Token | Network | Contract Address | Decimals |
 |-------|---------|------------------|----------|
 | USDT  | Mainnet | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` | 6 |
-| USDD  | Mainnet | `TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn` | 18 |
 | USDT  | Nile    | `TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf` | 6 |
-| USDD  | Nile    | `TAbFfLhC8x62fC4zWd9p7x5f8g5z3x7d2x` | 18 |
+| USDT  | Shasta  | `TG3XXyExBkPp9nzdajDZsozEu4BkaSJozs` | 6 |
+| USDD  | Mainnet | `TXDk8mbtRbXeYuMNS83CfKPaYYT8XWv9Hz` | 18 |
+| USDD  | Nile    | `TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK` | 18 |
 
 | Amount (raw) | Value (USDT, 6 dec) | Typical Use |
 |--------------|---------------------|-------------|
@@ -232,6 +233,6 @@ If the endpoint returns an image (Content-Type: `image/*`) or binary data (`appl
 
 | Network | Chain ID | CAIP-2 | USDT Contract | USDD Contract |
 |---------|----------|--------|---------------|---------------|
-| TRON Mainnet | 0x2b6653dc | `eip155:728126428`, `tron:mainnet` | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` | `TPYmHEhy5n8TCEfYGqW2rPxsghSfzghPDn` |
-| TRON Nile | 0xcd8690dc | `eip155:3448148188`, `tron:nile` | `TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf` | `TAbFfLhC8x62fC4zWd9p7x5f8g5z3x7d2x` (Test) |
-| TRON Shasta | 0x94a9059e | `eip155:2494104990`, `tron:shasta` | - | - |
+| TRON Mainnet | 0x2b6653dc | `eip155:728126428`, `tron:mainnet` | `TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t` | `TXDk8mbtRbXeYuMNS83CfKPaYYT8XWv9Hz` |
+| TRON Nile | 0xcd8690dc | `eip155:3448148188`, `tron:nile` | `TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf` | `TGjgvdTWWrybVLaVeFqSyVqJQWjxqRYbaK` |
+| TRON Shasta | 0x94a9059e | `eip155:2494104990`, `tron:shasta` | `TG3XXyExBkPp9nzdajDZsozEu4BkaSJozs` | - |
