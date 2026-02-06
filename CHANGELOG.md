@@ -5,6 +5,13 @@ All notable changes to the **OpenClaw Extension** project will be documented in 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-02-06
+
+### 💳 x402-payment-tron Skill (v1.0.1)
+- **Rate Limit Protection**: Added support for `TRON_GRID_API_KEY`. The skill now automatically discovers API keys from the environment or configuration files to prevent TronGrid 429 errors.
+- **Protocol Update**: Upgraded `@open-aibank/x402-tron` to `v0.1.6`.
+- **Implementation Fix**: Switched mechanism to `ExactTronClientMechanism` to align with the latest protocol standards.
+
 ## [1.0.0] - 2026-02-04
 
 ### Initial Release
