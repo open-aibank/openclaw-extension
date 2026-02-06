@@ -72,6 +72,10 @@ The tools require access to TRON private keys to sign transactions on behalf of 
 - **Warning**: Ensure this file is secured (`chmod 600`) and never shared or committed to version control.
 - We recommend using specific agent wallets with limited funds rather than your main personal wallet.
 
+## Use at your own risk
+
+Allowing AI agents to handle private keys directly involves substantial security risks. We advise using only small amounts of cryptocurrency and exercising caution. Despite the built-in safeguards, there is no guarantee that your assets are immune to loss. This extension is currently in an experimental stage and has not been subjected to rigorous testing. It is provided without any warranty or assumption of liability. Always validate your setup on a testnet (e.g., Nile) before interacting with the TRON mainnet.
+
 ## 🤝 Contributing
 
 We welcome contributions! Please see the [OpenClaw](https://github.com/openclaw) organization for more details on the underlying technologies.
