@@ -19,7 +19,7 @@ Simply tell the Agent:
 ## Workflow
 
 1.  **Request Resource**: When triggered, follow the instructions provided by the `x402_payment_tron` skill to fetch the protected resource based on the network:
-    - **Tron Mainnet**: `https://x402-tron-demo.sunagent.ai/protected_mainnet`
-    - **Tron Nile**: `https://x402-tron-demo.sunagent.ai/protected_nile`
+    - **Tron Nile**: `https://x402-tron-demo.aibank.io/protected-nile`
+    - **Tron Shasta**: `https://x402-tron-demo.aibank.io/protected-shasta`
 2.  **Handle Payment**: Perform the payment and resource acquisition automatically as guided by the protocol (handling 402 Payment Required, signing permits, etc.).
 3.  **Display & Cleanup**: Once the image is retrieved, present it to the user. Immediately delete the local temporary file after the image has been displayed.
