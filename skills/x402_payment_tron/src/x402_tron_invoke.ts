@@ -147,6 +147,14 @@ async function main() {
       console.error('[ERROR] TRON_PRIVATE_KEY is missing or not configured.');
       process.exit(1);
     }
+
+    const apiKey = await findApiKey();
+    if (networkName === 'mainnet' && !apiKey) {
+      console.error('[WARNING] TRON_GRID_API_KEY is missing. Mainnet requests may be rate-limited or fail.');
+    } else if (apiKey) {
+      console.error('[OK] TRON_GRID_API_KEY is configured.');
+    }
+
     try {
       const networks: Record<string, any> = {
         mainnet: { fullHost: 'https://api.trongrid.io' },

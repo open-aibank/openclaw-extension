@@ -29,16 +29,8 @@ Currently recommended tokens: **USDT**, **USDD**.
 
 The tool `x402_tron_invoke` is implemented by the compiled script `dist/x402_tron_invoke.js`.
 
-You can run the executable directly from the command line:
+The script is pre-built and ready to run. You can execute it directly from the command line:
 
-**Build:**
-```bash
-cd skills/x402_payment_tron
-npm install && npm run build
-# Output: dist/x402_tron_invoke.js
-```
-
-**Run:**
 ```bash
 # v2 Invoke
 node dist/x402_tron_invoke.js --url https://api.example.com --entrypoint chat --input '{"prompt": "hi"}'
@@ -72,6 +64,7 @@ The `x402_tron_invoke` tool:
   2. `~/.mcporter/mcporter.json` (AIBank standard).
   3. `x402-config.json` in the current/home directory.
 - **Tokens**: Wallet needs USDT/USDD and some TRX for gas.
+- **TronGrid API Key**: Required for **Mainnet** to avoid rate limits (`TRON_GRID_API_KEY`).
 
 ---
 
@@ -92,6 +85,7 @@ Invokes an HTTP endpoint with automatic payment handling.
     *   **Agent Advice**: Use this mode for discovery. If `url` returns 404, try appending `/.well-known/agent.json` or `/entrypoints`.
 3.  **Status Check**: Provide `--check` or `--status`.
     *   Verifies if `TRON_PRIVATE_KEY` is correctly configured and outputs the associated wallet address.
+    *   Checks if `TRON_GRID_API_KEY` is present (Required for Mainnet).
     *   **Agent Advice**: ALWAYS use this instead of `env` or `echo $TRON_PRIVATE_KEY`.
 
 | Parameter | Type | Required | Description |
