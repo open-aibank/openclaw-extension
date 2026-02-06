@@ -42,6 +42,7 @@ These foundational tools are installed to manage the agent ecosystem:
 OpenClaw Extension provides a CLI installer to set up your environment quickly.
 
 ### Prerequisites
+- **OpenClaw** (Your personal, open-source AI assistant)
 - **Node.js** (v18+)
 - **Python 3** (for configuration helpers)
 - **TRON Wallet** (Private Key & API Key for TRON network interaction)
