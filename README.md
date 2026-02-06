@@ -1,6 +1,6 @@
 # OpenClaw Extension
 
-OpenClaw Extension is a suite of tools and protocols developed by **AIBank** to empower AI Agents with financial sovereignty. It enables agents to hold wallets, execute transactions, and monetize services using the **x402 Protocol** (HTTP 402 Payment Required).
+OpenClaw Extension is a suite of tools developed by **AIBank** to empower AI Agents with financial sovereignty. It enables agents to hold wallets, execute transactions, and monetize services using the **x402 Protocol** (HTTP 402 Payment Required).
 
 ## 🚀 Mission
 
