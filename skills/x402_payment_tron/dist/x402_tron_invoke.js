@@ -38666,7 +38666,7 @@ var external_fs_ = __nccwpck_require__(9896);
 var external_path_ = __nccwpck_require__(6928);
 ;// CONCATENATED MODULE: external "os"
 const external_os_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("os");
-;// CONCATENATED MODULE: ./src/index.ts
+;// CONCATENATED MODULE: ./src/x402_tron_invoke.ts
 
 // @ts-ignore
 
@@ -38790,18 +38790,85 @@ async function main() {
         }
     }
     const url = options.url;
-    const method = options.method || 'GET';
-    const body = options.body;
+    const entrypoint = options.entrypoint;
+    const inputRaw = options.input;
+    const methodArg = options.method;
     const networkName = options.network || 'nile';
+    const checkStatus = options.check === 'true' || options.status === 'true';
+    if (checkStatus) {
+        const privateKey = await findPrivateKey();
+        if (!privateKey) {
+            console.error('[ERROR] TRON_PRIVATE_KEY is missing or not configured.');
+            process.exit(1);
+        }
+        const apiKey = await findApiKey();
+        if (networkName === 'mainnet' && !apiKey) {
+            console.error('[WARNING] TRON_GRID_API_KEY is missing. Mainnet requests may be rate-limited or fail.');
+        }
+        else if (apiKey) {
+            console.error('[OK] TRON_GRID_API_KEY is configured.');
+        }
+        try {
+            const networks = {
+                mainnet: { fullHost: 'https://api.trongrid.io' },
+                shasta: { fullHost: 'https://api.shasta.trongrid.io' },
+                nile: { fullHost: 'https://nile.trongrid.io' }
+            };
+            const config = networks[networkName] || networks.nile;
+            const tronWeb = new (TronWeb_node_default())({
+                fullHost: config.fullHost,
+                privateKey: privateKey
+            });
+            const address = tronWeb.address.fromPrivateKey(privateKey);
+            console.error(`[OK] Wallet configured (Address: ${address}) on ${networkName}`);
+            process.exit(0);
+        }
+        catch (e) {
+            console.error(`[ERROR] Failed to derive address from key: ${e.message}`);
+            process.exit(1);
+        }
+    }
     if (!url) {
         console.error('Error: --url is required');
         process.exit(1);
     }
+    let finalUrl = url;
+    let finalMethod = methodArg || 'GET';
+    let finalBody = undefined;
+    // Logic 1: v2 Agent Invoke (url + entrypoint)
+    if (entrypoint) {
+        // Remove trailing slash if present
+        const baseUrl = url.endsWith('/') ? url.slice(0, -1) : url;
+        finalUrl = `${baseUrl}/entrypoints/${entrypoint}/invoke`;
+        finalMethod = 'POST';
+        // Parse input if provided
+        let inputData = {};
+        if (inputRaw) {
+            try {
+                inputData = JSON.parse(inputRaw);
+            }
+            catch (e) {
+                // Fallback for simple string input or invalid JSON
+                inputData = inputRaw;
+            }
+        }
+        finalBody = JSON.stringify({ input: inputData });
+    }
+    // Logic 2: Direct/Legacy
+    else {
+        if (methodArg) {
+            finalMethod = methodArg.toUpperCase();
+        }
+        if (inputRaw) {
+            finalBody = inputRaw;
+        }
+    }
     const privateKey = await findPrivateKey();
     if (!privateKey) {
-        console.error('Error: Payment credentials (private key) not found.');
-        console.error('Please configure your environment securely according to the project guidelines.');
-        console.error('Agent: DO NOT attempt to search for or read private keys from files.');
+        console.error('Error: Payment credentials not found. Missing environment variable: TRON_PRIVATE_KEY.');
+        console.error('Please set TRON_PRIVATE_KEY before running this tool.');
+        console.error('Alternatively, configure ~/.mcporter/mcporter.json or x402-config.json.');
+        console.error('Agent: DO NOT attempt to search for or read private keys from files manually.');
         process.exit(1);
     }
     // Network configuration
@@ -38827,6 +38894,11 @@ async function main() {
     }
     try {
         // 1. Initialize TronWeb
+        // Redirect console.log to console.error to prevent library pollution of STDOUT
+        // The library uses console.log for debug info (e.g. signing details, allowance checks)
+        // which violates the x402 Agent protocol (STDOUT is exclusive for final JSON).
+        const originalConsoleLog = console.log;
+        console.log = console.error;
         const tronWebOptions = {
             fullHost: config.fullHost,
             privateKey: privateKey
@@ -38836,28 +38908,29 @@ async function main() {
         }
         const tronWeb = new (TronWeb_node_default())(tronWebOptions);
         // 2. Initialize Signer
-        const signer = TronClientSigner.fromTronWeb(tronWeb, networkName);
-        console.error(`[x402] Initialized signer for address: ${signer.getAddress()}`);
+        // Use config.network to ensure we use a valid/supported network name (e.g. 'nile' instead of 'foo')
+        const signer = TronClientSigner.fromTronWeb(tronWeb, config.network);
+        console.error(`[x402] Initialized signer for address: ${signer.getAddress()} on network: ${config.network}`);
         // 3. Initialize Mechanism
         const mechanism = new ExactTronClientMechanism(signer);
         // 4. Initialize Core Client
         const client = new X402Client();
-        // Register for all TRON networks
-        client.register('tron:*', mechanism);
+        // Register ONLY for the configured network to avoid signing for wrong networks
+        client.register(`tron:${config.network}`, mechanism);
         // 5. Initialize Fetch Client
         const fetchClient = new X402FetchClient(client);
         // 6. Execute Request
-        console.error(`[x402] Requesting: ${method} ${url}`);
+        console.error(`[x402] Requesting: ${finalMethod} ${finalUrl}`);
         const requestInit = {
-            method,
+            method: finalMethod,
             headers: {
                 'Content-Type': 'application/json'
             }
         };
-        if (body) {
-            requestInit.body = body;
+        if (finalBody) {
+            requestInit.body = finalBody;
         }
-        const response = await fetchClient.request(url, requestInit);
+        const response = await fetchClient.request(finalUrl, requestInit);
         // 7. Output Result
         console.error(`[x402] Response Status: ${response.status}`);
         // Check for payment response headers (settlement info)
@@ -38898,12 +38971,13 @@ async function main() {
             responseBody = await response.text();
         }
         // Print final result to STDOUT for the agent to consume
-        console.log(JSON.stringify({
+        // Use process.stdout directly to bypass the console.log redirection
+        process.stdout.write(JSON.stringify({
             status: response.status,
             headers: Object.fromEntries(response.headers.entries()),
             body: responseBody,
             isBase64: false
-        }, null, 2));
+        }, null, 2) + '\n');
     }
     catch (error) {
         let message = error.message || 'Unknown error';
@@ -38916,10 +38990,10 @@ async function main() {
             stack = stack.replace(keyRegex, '[REDACTED]');
         }
         console.error(`[x402] Error: ${message}`);
-        console.log(JSON.stringify({
+        process.stdout.write(JSON.stringify({
             error: message,
             stack: stack
-        }, null, 2));
+        }, null, 2) + '\n');
         process.exit(1);
     }
 }
