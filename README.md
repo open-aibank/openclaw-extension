@@ -27,7 +27,7 @@ These foundational tools are installed to manage the agent ecosystem:
 
 ### Agent Capabilities
 
-1.  **tron-x402-payment (Payment Protocol)**
+1.  **x402-payment-tron (Payment Protocol)**
     This implements the **x402** protocol standard for the TRON Virtual Machine (TVM).
     - Enables "Pay-per-Request" models for agent APIs.
     - Allows agents to generate payment demands (invoices) and verify on-chain settlement before performing tasks.
@@ -62,7 +62,7 @@ curl -fsSL https://raw.githubusercontent.com/open-aibank/openclaw-extension/refs
 ```
 
 The interactive CLI will guide you through:
-1.  Selecting desired skills (`tron-x402-payment`, etc.).
+1.  Selecting desired skills (`x402-payment-tron`, etc.).
 2.  Configuring the `mcp-server-tron`.
 3.  Securely setting up your credentials.
 
