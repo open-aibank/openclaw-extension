@@ -1,7 +1,7 @@
 ---
 name: x402-payment-demo
 description: "Demo of x402 payment protocol by fetching a protected image. Triggers: 'demo x402-payment'"
-version: 1.0.1
+version: 1.0.2
 author: open-aibank
 metadata: {"clawdbot":{"emoji":"🖼️","triggers":["demo x402-payment", "show me x402 demo"]}}
 tags: [x402, demo, payment, tron, image]
