@@ -2,7 +2,7 @@
 name: x402-payment-tron
 description: "Pay for x402-enabled Agent endpoints using TRC20 tokens (USDT/USDD) on TRON"
 version: 1.1.0
-author: open-aibank
+author: bankofai
 homepage: https://x402.org
 metadata: {"clawdbot":{"emoji":"💳","env":["TRON_PRIVATE_KEY"]}}
 tags: [crypto, payments, x402, agents, api, usdt, usdd, tron]
@@ -61,7 +61,7 @@ The `x402_tron_invoke` tool:
 
 - **Wallet**: A TRON private key must be available. The skill automatically looks for it in:
   1. `TRON_PRIVATE_KEY` environment variable.
-  2. `~/.mcporter/mcporter.json` (AIBank standard).
+  2. `~/.mcporter/mcporter.json` (BankofAI standard).
   3. `x402-config.json` in the current/home directory.
 - **Tokens**: Wallet needs USDT/USDD and some TRX for gas.
 - **TronGrid API Key**: Required for **Mainnet** to avoid rate limits (`TRON_GRID_API_KEY`).

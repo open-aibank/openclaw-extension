@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-# OpenClaw Extension Installer (by AIBank)
+# OpenClaw Extension Installer (by BankofAI)
 
 # --- Colors & Styling ---
 BOLD='\033[1m'
@@ -278,7 +278,7 @@ multiselect() {
 # --- Main Logic ---
 
 echo -e "${ACCENT}${BOLD}"
-echo "  🦞 OpenClaw Extension Installer (by AIBank)"
+echo "  🦞 OpenClaw Extension Installer (by BankofAI)"
 echo -e "${NC}${ACCENT_DIM}  $TAGLINE${NC}"
 echo ""
 
@@ -362,7 +362,7 @@ for idx in "${SELECTED_INDICES[@]}"; do
              JSON_PAYLOAD=$(cat <<EOF
 {
   "command": "npx",
-  "args": ["-y", "@open-aibank/mcp-server-tron"],
+  "args": ["-y", "@bankofai/mcp-server-tron"],
   "env": {
     "TRON_PRIVATE_KEY": $TRON_KEY_VAL,
     "TRONGRID_API_KEY": $TRON_API_KEY_VAL

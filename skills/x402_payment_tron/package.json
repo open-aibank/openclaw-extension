@@ -12,7 +12,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@open-aibank/x402-tron": "^0.1.6",
+    "@bankofai/x402-tron": "^0.1.6",
     "tronweb": "^5.3.0",
     "ts-node": "^10.9.1"
   }

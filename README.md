@@ -1,6 +1,6 @@
 # OpenClaw Extension
 
-OpenClaw Extension is a suite of tools developed by **AIBank** to empower AI Agents with financial sovereignty. It enables agents to hold wallets, execute transactions, and monetize services using the **x402 Protocol** (HTTP 402 Payment Required).
+OpenClaw Extension is a suite of tools developed by **BankofAI** to empower AI Agents with financial sovereignty. It enables agents to hold wallets, execute transactions, and monetize services using the **x402 Protocol** (HTTP 402 Payment Required).
 
 ## 🚀 Mission
 
@@ -58,7 +58,7 @@ Install from source:
 Online install:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/open-aibank/openclaw-extension/refs/heads/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/bankofai/openclaw-extension/refs/heads/main/install.sh | bash
 ```
 
 The interactive CLI will guide you through:

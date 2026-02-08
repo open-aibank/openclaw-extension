@@ -4,7 +4,7 @@ import {
   X402Client,
   X402FetchClient,
   ExactTronClientMechanism
-} from '@open-aibank/x402-tron';
+} from '@bankofai/x402-tron';
 // @ts-ignore
 import TronWeb from 'tronweb';
 import * as fs from 'fs';
@@ -35,7 +35,7 @@ async function findPrivateKey(): Promise<string | undefined> {
     }
   }
 
-  // 3. Check mcporter config (AIBank standard)
+  // 3. Check mcporter config (BankofAI standard)
   const mcporterPath = path.join(os.homedir(), '.mcporter', 'mcporter.json');
   if (fs.existsSync(mcporterPath)) {
     try {
@@ -87,7 +87,7 @@ async function findApiKey(): Promise<string | undefined> {
     }
   }
 
-  // 3. Check mcporter config (AIBank standard)
+  // 3. Check mcporter config (BankofAI standard)
   const mcporterPath = path.join(os.homedir(), '.mcporter', 'mcporter.json');
   if (fs.existsSync(mcporterPath)) {
     try {
