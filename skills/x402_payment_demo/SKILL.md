@@ -2,7 +2,7 @@
 name: x402-payment-demo
 description: "Demo of x402 payment protocol by fetching a protected image. Triggers: 'demo x402-payment'"
 version: 1.0.2
-author: open-aibank
+author: bankofai
 metadata: {"clawdbot":{"emoji":"🖼️","triggers":["demo x402-payment", "show me x402 demo"]}}
 tags: [x402, demo, payment, tron, image]
 arguments:
@@ -23,8 +23,8 @@ Simply tell the Agent:
 ## Workflow
 
 1.  **Request Resource**: When triggered, follow the instructions provided by the `x402-payment-tron` skill to fetch the protected resource. **Use Tron Nile by default**:
-    - **Tron Nile (Default)**: `https://x402-tron-demo.aibank.io/protected-nile`
-    - **Tron Shasta**: `https://x402-tron-demo.aibank.io/protected-shasta`
-    - **Tron Mainnet**: `https://x402-tron-demo.aibank.io/protected-mainnet`
+    - **Tron Nile (Default)**: `https://x402-tron-demo.bankofai.io/protected-nile`
+    - **Tron Shasta**: `https://x402-tron-demo.bankofai.io/protected-shasta`
+    - **Tron Mainnet**: `https://x402-tron-demo.bankofai.io/protected-mainnet`
 2.  **Handle Payment**: Perform the payment and resource acquisition automatically as guided by the protocol (handling 402 Payment Required, signing permits, etc.).
 3.  **Display & Cleanup**: Once the image is retrieved, present it to the user. Immediately delete the local temporary file after the image has been displayed.
